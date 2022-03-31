@@ -1,0 +1,232 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Практическая работа №1: Краевая задача для уравнения II-го порядка\n",
+    "\n",
+    "Выполнил студент гр. 9381 Хамидов Максуд, вариант 15."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Цель работы\n",
+    "\n",
+    "Научиться применять дифференциальные уравнения в различных областях, решать краевую задачу для уравнения II-го порядка путём многократного решения задачи Коши."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Основные теоретические положения\n",
+    "\n",
+    "Обыкновенные дифференциальные уравнения (ОДУ) — это уравнения, зависящие от одной независимой переменной, имеющие вид\n",
+    "\n",
+    "$$ f(x, y, y', y'', \\dots, y^{(n)}) = 0, $$.\n",
+    "\n",
+    "Общим решением ОДУ является множество таких функций $y$: $ f(x, y, y', y'', \\dots, y^{(n)}) = 0 $.\n",
+    "\n",
+    "Задача Коши подразумевает поиск частного решения. Общий вид задачи Коши:\n",
+    "\n",
+    "\\begin{cases}\n",
+    "    f(x, y, y', y'', \\dots, y^{(n)}) = 0 \\\\\n",
+    "    y(x_0) = y_0 \\\\\n",
+    "    y'(x_0) = y_1 \\\\\n",
+    "    y''(x_0) = y_2 \\\\\n",
+    "    \\dots \\\\\n",
+    "    y^{(n-1)}(x_0) = y_{n-1}\n",
+    "\\end{cases}\n",
+    "\n",
+    "В рамках данной работы рассматривается дифференциальное уравнение второго порядка:\n",
+    "\n",
+    "### $\\displaystyle{y''=f(x,y)}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Постановка задачи\n",
+    "\n",
+    "Дано дифференциальное уравнение:\n",
+    "\n",
+    "$\\displaystyle{y''=\\frac{2^x}{x^2+y}, 0<x<2}$\n",
+    "\n",
+    "и граничные условия:\n",
+    "\n",
+    "$\\displaystyle{y(0)=3,y(2)=4}$\n",
+    "\n",
+    "Требуется найти решение задачи и построить его график.\n",
+    "\n",
+    "Рассмотрим задачу Коши для уравнения с начальными условиями:\n",
+    "\n",
+    "$\\displaystyle{y(0) = 3, y'(0) = h}$\n",
+    "\n",
+    "План решения основан на многократном решении задачи Коши. Значение решения задачи Коши при $\\displaystyle{x=2}$ является функцией от $\\displaystyle{h}$. Задача сводится к отысканию такого значения переменной $\\displaystyle{h}$, при котором выполнено условие на правом конце отрезка, т.е. должно выполняться:\n",
+    "\n",
+    "$\\displaystyle{y(2,h)=4}$\n",
+    "\n",
+    "Это уравнение с одним неизвестным $\\displaystyle{h}$. Для его решения можно применить стандартный метод половинного деления."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Выполнение работы\n",
+    "\n",
+    "*Многократно решаем задачу Коши при различных h:*\n",
+    "\n",
+    "$\\begin{cases}\n",
+    "    \\displaystyle{y'' = \\frac{2^x}{x^2+y}} \\\\\n",
+    "    y(0) = 3 \\\\\n",
+    "    y'(0) = h\n",
+    "\\end{cases}$\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Вилка: h in [-1.0, 0.5]\n",
+      "h = 0.072998046875\n",
+      "y(b, h) = 3.999356238772321\n"
+     ]
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "from pylab import *\n",
+    "from scipy.integrate import *\n",
+    "\n",
+    "def f(vec, x):\n",
+    "    y, v = vec\n",
+    "    return [v, 2**x / (x**2+y)]\n",
+    "\n",
+    "y_a = 3\n",
+    "y_b = 4\n",
+    "h_0 = -1\n",
+    "delta = 1.5\n",
+    "\n",
+    "x = linspace(0, 2, 100000)\n",
+    "\n",
+    "solve = odeint(f, [y_a, h_0], x)[: ,0]\n",
+    "y_b_h = solve[-1]\n",
+    "\n",
+    "if abs(y_b_h - y_b) >= 0.001:\n",
+    "    \n",
+    "    sign_0 = sign(y_b - y_b_h)\n",
+    "    h_left, h_right = None, None\n",
+    "\n",
+    "    h = h_0\n",
+    "    for m in range(100):\n",
+    "        h += delta\n",
+    "        solve = odeint(f, [y_a, h], x)[: ,0]\n",
+    "        y_b_h = solve[-1] \n",
+    "        if sign(y_b - y_b_h) != sign_0: \n",
+    "            h_left = h - delta\n",
+    "            h_right = h\n",
+    "            print(\"Вилка: h in [{}, {}]\".format(h_left, h_right))\n",
+    "            break\n",
+    "    if h_left == None: \n",
+    "        h = h_0\n",
+    "        for m in range(100):\n",
+    "            h -= delta\n",
+    "            solve = odeint(f, [y_a, h], x)[: ,0]\n",
+    "            y_b_h = solve[-1] \n",
+    "            if sign(y_b - y_b_h) != sign_0: \n",
+    "                h_left = h + delta\n",
+    "                h_right = h\n",
+    "                print(\"Вилка: h in [{}, {}]\".format(h_left, h_right))\n",
+    "                break\n",
+    "    \n",
+    "    if h_left == None: \n",
+    "        print(\"\\n\\033[1mНет решений\\n\\033[0m\")\n",
+    "    else: \n",
+    "        solveLeft = odeint(f, [y_a, h_left], x)[: ,0] \n",
+    "        solveRight = solve \n",
+    "        \n",
+    "        while abs(solveRight[-1] - solveLeft[-1]) >= 0.001: \n",
+    "            \n",
+    "            mid = (h_left + h_right) / 2 \n",
+    "            solveMid = odeint(f, [y_a, mid], x)[: ,0] \n",
+    "            \n",
+    "            if sign(y_b - solveMid[-1]) == sign_0: \n",
+    "                h_left = mid \n",
+    "                solveLeft = solveMid\n",
+    "            else: \n",
+    "                h_right = mid\n",
+    "                solveRight = solveMid\n",
+    "    \n",
+    "        plot(x, solveLeft)\n",
+    "        xlabel('x')\n",
+    "        ylabel('y')\n",
+    "        grid()\n",
+    "        print(\"h = {}\\ny(b, h) = {}\".format(h_left, solveLeft[-1]))\n",
+    "\n",
+    "else:\n",
+    "    plot(x, solve)\n",
+    "    xlabel('x')\n",
+    "    ylabel('y')\n",
+    "    grid()\n",
+    "    print(\"h = {}\\ny(b, h) = {}\".format(h_0, solve[-1]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Выводы\n",
+    "\n",
+    "В ходе практической работы была решена краевая задача для уравнения 2-ого порядка с использованием методов численного интегрирования с определенной точностью.\n",
+    "\n",
+    "Были получены следующие результаты:\n",
+    "- $ h = 0.072998046875 $\n",
+    "- $ f(b, h) = 3.999356238772321 \\approx 4 = y_b$\n",
+    "\n",
+    "Значение $h$ было найдено с точностью до $0.001$."
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
