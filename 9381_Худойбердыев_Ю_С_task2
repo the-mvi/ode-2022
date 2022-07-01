@@ -1,0 +1,253 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Практическая работа №2: Исследование однородного линейного уравнения с периодическими коэффициентами\n",
+    "\n",
+    "Выполнил студент гр. 9381 Худойбердыев Юсуф, вариант 16."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Цель работы\n",
+    "\n",
+    "Изучение устойчивости однородного линейного уравнения с периодическими коэффициентами при $t \\longrightarrow +\\infty$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Основные теоретические положения\n",
+    "\n",
+    "Cистема линейных дифференциальных уравнений следующего вида:\n",
+    "\n",
+    "#### $$X' = A(t)X,$$\n",
+    "где $$A_{i,j}(t + T) = A_{i,j}(t) \\; \\forall t \\ge 0$$\n",
+    "\n",
+    "называется системой однородных линейных дифференциальных уравнений с периодическими коэффициентами.\n",
+    "\n",
+    "Здесь $T > 0$ - период коэффициентов системы $a_{i,j}$\n",
+    "\n",
+    "Фундаментальной матрицей системы (1) называется такая матрица $\\Phi(t)$, что ее стобцы являются линейно независимой комбинацией решений системы $X' = A(t)X$.\n",
+    "\n",
+    "Основной матрицей для фундаментальной матрицы $\\Phi(t)$ называется такая матрица $C$, что\n",
+    "\n",
+    "#### $$\\Phi(t + T) = \\Phi(t)C, \\; \\forall t \\ge 0$$.\n",
+    "\n",
+    "Спектральным радиусом матрицы $C$ называется число:\n",
+    "\n",
+    "#### $$r(C) = \\max\\limits_{i}|\\lambda_i|,$$\n",
+    "\n",
+    "где $\\lambda_i$ - собственные числа матрицы $C$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Постановка задачи\n",
+    "\n",
+    "Дано дифференциальное уравнение:\n",
+    "\n",
+    "$$ x'' + a(p,t)x = 0, \\;\\; a(p,t) = p + b(t), \\;\\; b(t + T) = b(t), $$\n",
+    "\n",
+    "где $p$ - параметр.\n",
+    "\n",
+    "Данное уравнение сводится к системе двух уравнений I-го порядка:\n",
+    "\n",
+    "$$\n",
+    "\\begin{cases}\n",
+    "    u'_1 = u_2, \\\\\n",
+    "    u'_2 = -a(p,t)u_1;\n",
+    "\\end{cases}\n",
+    "\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\;\\; (1)\n",
+    "$$\n",
+    "\n",
+    "Здесь $u_1(t) = x(t), \\; u_2(t) = x'(t)$.\n",
+    "\n",
+    "Необходимо провести исследование устойчивости однородного линейного уравнения. Дальнейшие рассуждения применимы к любой линейной периодической системе, а не только к системе вида $(1)$."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Схема решения\n",
+    "\n",
+    "_1. Задаем массив значений параметра $p$. Например, $p$ меняется от $0.1$ до $5$ с шагом $0.05$. Для каждого значения $p$ проделаем следующие действия ( в теле цикла)._\n",
+    "\n",
+    "_2. Вычисляем значение фундаментальной матрицы системы $(1)$ при $t = T$ с помощью любой программы численного решения задачи\n",
+    "Коши.\n",
+    "Для этого решаем две задачи Коши с начальными векторами $V_1 = (1, 0)^T$ и $V_2 = (0, 1)^T$ на отрезке $[0, T]$. Пусть вектор-функции $U(t, V_1), \\; U(t, V_2)$ – решения этих задач. Они являются столбцами фундаментальной матрицы $\\Phi(t)$, удовлетворяющей условию $\\Phi(0) = E$. Основную матрицу $C$ для $\\Phi(t)$ получаем из формулы $C = \\Phi(T)$.\n",
+    "Столбцы матрицы $C$ это векторы $U(T, V_1), U(T, V_2)$;_\n",
+    "\n",
+    "_3. Вычисляем собственные числа матрицы 𝐶 и ее спектральный радиус, т.е.\n",
+    "$$ r(p) = \\max\\limits_{j = 1,2}|\\lambda_j|.$$\n",
+    "В результате имеем массив значений $r(p)$;_\n",
+    "\n",
+    "_4. Вывод об устойчивости или неустойчивости делается в зависимости от значения $r(p)$._\n",
+    "\n",
+    "_Рекомендуется построить график этой зависимости, из которого с достаточной точностью можно определить точку 𝑝0, которая разделяет зоны устойчивости и неустойчивости, в которых $r \\le 1$ и $r \\gt 1$. Более точно\n",
+    "вычисляется методом половинного деления._\n",
+    "\n",
+    "_Матрицу $C$ можно найти только приближенно, решая численно две задачи Коши._"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Выполнение работы\n",
+    "\n",
+    "\n",
+    "*$b(t) = \\displaystyle{\\frac{1}{2+sin\\;2t}}\\;$*"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pylab as pl\n",
+    "import scipy.integrate as si\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import math"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def b(t):\n",
+    "    return 1/(2+math.sin(2*t))\n",
+    "\n",
+    "def f(u, t):\n",
+    "    return [u[1], -(p + b(t))*u[0]]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "V1 = [1, 0]\n",
+    "V2 = [0, 1] \n",
+    "t = pl.linspace(0, math.pi, 10000) \n",
+    "P, R = [], []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for p in np.arange(0.1, 5.05, 0.05):\n",
+    "    P.append(p)\n",
+    "    solve_1 = si.odeint(f, V1, t)\n",
+    "    solve_2 = si.odeint(f, V2, t)\n",
+    "    C = np.transpose(np.array([solve_1[-1], solve_2[-1]]))\n",
+    "    R.append(max(abs(np.linalg.eig(C)[0])))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Методом половинного деления найдем точку $p_0$, разделяющую зоны устойчивости и неустойчивости с точностью $\\varepsilon=10^{-3}$."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "p0 = 3.5000000000000013, r(p0) = 1.0000000274923717\n"
+     ]
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "P0 = -1\n",
+    "rP0 = -1\n",
+    "\n",
+    "for i in range(1, len(R)):\n",
+    "    if abs(R[-i] - 1) > 0.001:\n",
+    "        P0 = P[-i + 1]\n",
+    "        rP0 = R[-i + 1]\n",
+    "        break\n",
+    "\n",
+    "print(\"p0 = {}, r(p0) = {}\".format(P0, rP0))\n",
+    "\n",
+    "plt.plot(P, R, color=\"black\", label=\"r(p)\")\n",
+    "plt.grid(True)\n",
+    "plt.plot([P0, P0], [1, 2], color=\"red\", label=\"p0\")\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Анализ результатов\n",
+    "Граница между зонами устойчивости и неустойчивости найдена и равна $p_0 \\approx 3,5$. При значениях $p_0$ наблюдаются области со значением $r(p) > 1$. При таких значениях $p$ по крайней мере часть решений системы не ограничена и система не устойчива. При значениях $p >= p_0$ все решения системы ограничены и система устойчива."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Выводы\n",
+    "\n",
+    "В ходе выполнения практической работы была изучена устойчивость однородного линейного уравнения с периодическими коэффициентами при $t \\longrightarrow +\\infty$"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
